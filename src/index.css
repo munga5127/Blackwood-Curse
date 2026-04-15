@@ -253,3 +253,16 @@ body {
   color: var(--paper-color);
   font-size: 1.25rem;
 }
+
+.audio-control {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+}
+
+.audio-btn {
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}

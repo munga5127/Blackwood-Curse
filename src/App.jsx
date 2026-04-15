@@ -1,10 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { storyData } from './data/story';
 
 function App() {
   const [currentPhaseId, setCurrentPhaseId] = useState(1);
   const [passcodeGuess, setPasscodeGuess] = useState("");
   const [errorHighlight, setErrorHighlight] = useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  const toggleAudio = () => {
+    if (isAudioPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsAudioPlaying(!isAudioPlaying);
+  };
 
   useEffect(() => {
     const savedPhase = localStorage.getItem('mystery_phase');
@@ -34,6 +45,12 @@ function App() {
 
   return (
     <div className="app-container">
+      <div className="audio-control">
+        <button onClick={toggleAudio} className="btn-primary audio-btn">
+          {isAudioPlaying ? '⏸ Stop Gramophone' : '▶ Play Gramophone'}
+        </button>
+      </div>
+      <audio ref={audioRef} loop src="https://actions.google.com/sounds/v1/horror/ambient_hum.ogg" />
       <header className="site-header">
         <h1 className="typewriter site-title flicker">{storyData.title}</h1>
         <p className="site-description typewriter inline-flicker delay">{storyData.description}</p>
@@ -96,6 +113,9 @@ function App() {
       {currentPhase && !currentPhase.passcode && (
         <div className="end-record typewriter flicker">
           --- END OF RECORD ---
+          <div style={{ marginTop: '2rem', opacity: 0.6, fontSize: '0.85rem' }}>
+            <p>Coded by Munga Muiruray</p>
+          </div>
         </div>
       )}
     </div>
