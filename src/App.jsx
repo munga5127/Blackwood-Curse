@@ -20,6 +20,13 @@ function App() {
   useEffect(() => {
     const savedPhase = localStorage.getItem('mystery_phase');
     if (savedPhase) setCurrentPhaseId(parseInt(savedPhase));
+
+    // Attempt to auto-play audio immediately when the page loads
+    if (audioRef.current) {
+      audioRef.current.play()
+        .then(() => setIsAudioPlaying(true))
+        .catch(err => console.log("Autoplay blocked by browser:", err));
+    }
   }, []);
 
   const unlockedPhases = storyData.phases.filter(p => p.id <= currentPhaseId);
@@ -50,7 +57,7 @@ function App() {
           {isAudioPlaying ? '⏸ Stop Gramophone' : '▶ Play Gramophone'}
         </button>
       </div>
-      <audio ref={audioRef} loop src="https://actions.google.com/sounds/v1/horror/ambient_hum.ogg" />
+      <audio ref={audioRef} loop autoPlay src="/Nebula - Myuu.mp3" />
       <header className="site-header">
         <h1 className="typewriter site-title flicker">{storyData.title}</h1>
         <p className="site-description typewriter inline-flicker delay">{storyData.description}</p>
